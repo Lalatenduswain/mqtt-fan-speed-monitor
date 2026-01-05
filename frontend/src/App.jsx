@@ -1,52 +1,125 @@
-import { useState, useEffect, useMemo } from 'react';
-import FanController from './components/FanController/FanController';
-import FanDisplay from './components/FanDisplay/FanDisplay';
-import useWebSocket from './hooks/useWebSocket';
+import { useState } from 'react';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { HomeProvider } from './context/HomeContext';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import RoomDetail from './pages/RoomDetail';
+import EnergyMonitor from './pages/EnergyMonitor';
+import Schedules from './pages/Schedules';
+import Settings from './pages/Settings';
+import './App.css';
 
-function getWebSocketUrl() {
-  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-  return `${protocol}//${window.location.host}/ws`;
+function AppContent() {
+  const { isAuthenticated, loading, user, logout } = useAuth();
+  const [currentView, setCurrentView] = useState('dashboard');
+  const [selectedRoomId, setSelectedRoomId] = useState(null);
+
+  const handleRoomSelect = (roomId) => {
+    setSelectedRoomId(roomId);
+    setCurrentView('room');
+  };
+
+  const handleBack = () => {
+    setCurrentView('dashboard');
+    setSelectedRoomId(null);
+  };
+
+  const navigateTo = (view) => {
+    setCurrentView(view);
+    setSelectedRoomId(null);
+  };
+
+  // Show loading spinner while checking auth
+  if (loading) {
+    return (
+      <div className="app loading-screen">
+        <div className="loader">
+          <div className="spinner"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show login page if not authenticated
+  if (!isAuthenticated) {
+    return <Login />;
+  }
+
+  return (
+    <HomeProvider>
+      <div className="app">
+        {/* User header bar */}
+        <header className="user-header">
+          <div className="user-info">
+            <span className="user-avatar">
+              {user?.display_name?.[0]?.toUpperCase() || user?.username?.[0]?.toUpperCase() || '?'}
+            </span>
+            <span className="user-name">{user?.display_name || user?.username}</span>
+            {user?.role === 'admin' && <span className="user-badge">Admin</span>}
+          </div>
+          <button className="logout-btn" onClick={logout} title="Logout">
+            <span>Logout</span>
+          </button>
+        </header>
+
+        {currentView === 'dashboard' && (
+          <Dashboard onRoomSelect={handleRoomSelect} />
+        )}
+        {currentView === 'room' && selectedRoomId && (
+          <RoomDetail roomId={selectedRoomId} onBack={handleBack} />
+        )}
+        {currentView === 'energy' && (
+          <EnergyMonitor />
+        )}
+        {currentView === 'schedules' && (
+          <Schedules />
+        )}
+        {currentView === 'settings' && (
+          <Settings />
+        )}
+
+        {/* Bottom Navigation */}
+        <nav className="bottom-nav">
+          <button
+            className={`nav-item ${currentView === 'dashboard' || currentView === 'room' ? 'active' : ''}`}
+            onClick={() => navigateTo('dashboard')}
+          >
+            <span className="nav-icon">🏠</span>
+            <span className="nav-label">Home</span>
+          </button>
+          <button
+            className={`nav-item ${currentView === 'energy' ? 'active' : ''}`}
+            onClick={() => navigateTo('energy')}
+          >
+            <span className="nav-icon">⚡</span>
+            <span className="nav-label">Energy</span>
+          </button>
+          <button
+            className={`nav-item ${currentView === 'schedules' ? 'active' : ''}`}
+            onClick={() => navigateTo('schedules')}
+          >
+            <span className="nav-icon">⏰</span>
+            <span className="nav-label">Schedules</span>
+          </button>
+          <button
+            className={`nav-item ${currentView === 'settings' ? 'active' : ''}`}
+            onClick={() => navigateTo('settings')}
+          >
+            <span className="nav-icon">⚙️</span>
+            <span className="nav-label">Settings</span>
+          </button>
+        </nav>
+      </div>
+    </HomeProvider>
+  );
 }
 
 function App() {
-  const [speed, setSpeed] = useState(1);
-  const wsUrl = useMemo(() => getWebSocketUrl(), []);
-  const { sendMessage, lastMessage, connectionStatus } = useWebSocket(wsUrl);
-
-  useEffect(() => {
-    if (lastMessage) {
-      try {
-        const data = JSON.parse(lastMessage);
-        if (data.type === 'speed_update' || data.type === 'initial_state') {
-          setSpeed(data.speed);
-        }
-      } catch (error) {
-        console.error('Error parsing message:', error);
-      }
-    }
-  }, [lastMessage]);
-
-  const handleSpeedChange = (newSpeed) => {
-    sendMessage(JSON.stringify({ type: 'set_speed', speed: newSpeed }));
-  };
-
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>Fan Speed Monitor</h1>
-        <div className={`connection-status ${connectionStatus}`}>
-          <span className="status-dot"></span>
-          {connectionStatus === 'connected' ? 'Connected' : 'Disconnected'}
-        </div>
-      </header>
-      <main className="app-main">
-        <FanController speed={speed} onSpeedChange={handleSpeedChange} />
-        <FanDisplay speed={speed} />
-      </main>
-      <footer className="app-footer">
-        <p>MQTT-based IoT Fan Speed Monitoring System</p>
-      </footer>
-    </div>
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 

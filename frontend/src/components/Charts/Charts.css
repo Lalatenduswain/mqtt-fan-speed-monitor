@@ -1,0 +1,243 @@
+/* Common Chart Styles */
+.chart-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* Bar Chart */
+.bar-chart {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.bar-chart-bars {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  padding-bottom: 24px;
+}
+
+.bar-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  position: relative;
+}
+
+.bar {
+  width: 100%;
+  max-width: 40px;
+  border-radius: 4px 4px 0 0;
+  transition: height 0.3s ease;
+  min-height: 2px;
+}
+
+.bar-value-label {
+  font-size: 10px;
+  color: #9ca3af;
+  margin-bottom: 4px;
+  height: 14px;
+}
+
+.bar-label {
+  position: absolute;
+  bottom: 0;
+  font-size: 10px;
+  color: #6b7280;
+  white-space: nowrap;
+  transform: rotate(-45deg);
+  transform-origin: top left;
+  left: 50%;
+}
+
+/* Line Chart */
+.line-chart {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.line-chart-svg {
+  flex: 1;
+  width: 100%;
+}
+
+.chart-grid line {
+  stroke: rgba(255, 255, 255, 0.05);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.chart-dot {
+  transition: r 0.2s ease;
+  cursor: pointer;
+}
+
+.chart-dot:hover {
+  r: 5;
+}
+
+.line-chart-labels {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 8px;
+}
+
+.line-chart-label {
+  font-size: 10px;
+  color: #6b7280;
+}
+
+/* Donut Chart */
+.donut-chart {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.donut-chart-svg {
+  width: 100%;
+  height: auto;
+}
+
+.donut-segment {
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.donut-segment:hover {
+  opacity: 0.8;
+}
+
+.donut-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.donut-total {
+  display: block;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.donut-unit {
+  display: block;
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.donut-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 16px;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.legend-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.legend-label {
+  color: #9ca3af;
+}
+
+.legend-value {
+  color: #fff;
+  font-weight: 500;
+}
+
+/* Stat Card for Energy */
+.stat-card {
+  background: linear-gradient(145deg, #2a2a4a, #1e1e3a);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.stat-card-title {
+  font-size: 12px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-card-icon {
+  font-size: 20px;
+}
+
+.stat-card-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.stat-card-unit {
+  font-size: 14px;
+  color: #6b7280;
+  margin-left: 4px;
+}
+
+.stat-card-change {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.stat-card-change.positive {
+  color: #ef4444;
+}
+
+.stat-card-change.negative {
+  color: #4ade80;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .bar-label {
+    font-size: 8px;
+  }
+
+  .donut-total {
+    font-size: 24px;
+  }
+
+  .legend-item {
+    font-size: 10px;
+  }
+}

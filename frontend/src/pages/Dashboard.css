@@ -1,0 +1,161 @@
+.dashboard {
+  min-height: 100vh;
+  padding: 16px;
+  padding-top: 76px;
+  padding-bottom: 80px;
+}
+
+.dashboard.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader {
+  text-align: center;
+  color: #9ca3af;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #4ade80;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Header */
+.dashboard-header {
+  margin-bottom: 24px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.dashboard-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #6b7280;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+}
+
+.connection-status.connected {
+  color: #4ade80;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #6b7280;
+}
+
+.connection-status.connected .status-dot {
+  background: #4ade80;
+}
+
+.header-stats {
+  display: flex;
+  gap: 24px;
+}
+
+.header-stats .stat {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.header-stats .stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #4ade80;
+}
+
+.header-stats .stat-label {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* Sections */
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 16px 0;
+}
+
+/* Scenes Section */
+.scenes-section {
+  margin-bottom: 32px;
+}
+
+.scenes-grid {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scenes-grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* Rooms Section */
+.rooms-section {
+  margin-bottom: 32px;
+}
+
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+}
+
+.empty-state .hint {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .dashboard {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .rooms-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}

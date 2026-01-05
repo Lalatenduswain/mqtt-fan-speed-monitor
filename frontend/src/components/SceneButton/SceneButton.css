@@ -1,0 +1,34 @@
+.scene-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  background: linear-gradient(145deg, #2a2a4a, #1e1e3a);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 80px;
+}
+
+.scene-button:hover {
+  transform: translateY(-2px);
+  border-color: #3b82f6;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+}
+
+.scene-button:active {
+  transform: scale(0.95);
+}
+
+.scene-icon {
+  font-size: 28px;
+}
+
+.scene-name {
+  font-size: 12px;
+  color: #9ca3af;
+  text-align: center;
+  white-space: nowrap;
+}
