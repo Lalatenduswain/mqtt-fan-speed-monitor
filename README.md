@@ -51,8 +51,53 @@ A real-time IoT fan speed monitoring and control system using MQTT protocol. Con
 | Frontend | React 18, Vite 5 |
 | Backend | Node.js, Express, WebSocket (ws) |
 | MQTT Broker | Eclipse Mosquitto 2.0 |
+| ESP32 Device | Arduino, PubSubClient, ArduinoJson |
 | Communication | MQTT, WebSocket |
 | Containerization | Docker, Docker Compose |
+
+## ESP32 Hardware Controller
+
+Control a real PC-style 4-pin fan using an ESP32 microcontroller.
+
+### Hardware Requirements
+
+- ESP32 development board
+- PC 4-pin fan (12V, with PWM and tachometer)
+- 12V power supply for fan
+- 1K resistor (PWM signal)
+- 10K resistor (tachometer pull-up)
+
+### Wiring
+
+```
+ESP32                          4-Pin Fan
+GPIO18 ---[1K resistor]--->    Pin 4 (PWM - Blue)
+GPIO19 <--[10K pull-up]---     Pin 3 (Tach - Green)
+GND -----------------------    Pin 1 (GND - Black)
+                               Pin 2 (12V - Yellow) --> External 12V PSU
+```
+
+### Setup
+
+1. **Install Arduino Libraries**
+   - PubSubClient (by Nick O'Leary)
+   - ArduinoJson (by Benoit Blanchon)
+
+2. **Configure WiFi and MQTT** in `esp32/fan_controller/fan_controller.ino`:
+   ```cpp
+   const char* WIFI_SSID = "YOUR_WIFI_SSID";
+   const char* WIFI_PASSWORD = "YOUR_WIFI_PASSWORD";
+   const char* MQTT_BROKER = "fan.lalatendu.info";
+   ```
+
+3. **Upload** to ESP32 using Arduino IDE or PlatformIO
+
+### Features
+
+- 25kHz PWM output for PC fan control
+- Tachometer reading for actual RPM
+- MQTT integration with the web interface
+- Auto-reconnect for WiFi and MQTT
 
 ## Quick Start
 
@@ -134,6 +179,9 @@ mqtt-fan-speed-monitor/
 │   └── mosquitto/
 │       └── config/
 │           └── mosquitto.conf  # MQTT broker configuration
+├── esp32/
+│   └── fan_controller/
+│       └── fan_controller.ino  # ESP32 Arduino sketch
 ├── backend/
 │   ├── package.json
 │   ├── .env
